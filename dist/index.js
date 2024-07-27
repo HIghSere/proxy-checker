@@ -71,5 +71,6 @@ function main() {
         console.log("Valid:", validCountor);
         console.log("Invalid:", invalidCountor);
         console.log("Timeout:", timeoutCountor);
+        process.stdin.resume();
     });
 }
