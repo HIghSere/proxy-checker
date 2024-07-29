@@ -18,6 +18,7 @@ const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const prompt = (0, prompt_sync_1.default)();
 //import functions files
 const color_1 = require("./util/color");
+const ua_gen_1 = require("./util/ua-gen");
 //start main
 main();
 function main() {
@@ -44,7 +45,11 @@ function main() {
         const proxies = fs_1.default.readFileSync("data/unknownProxies.txt", "utf-8").toString().split("\n");
         const checkPromise = proxies.map((proxy) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield axios_1.default.get("https://example.com/");
+                const response = yield axios_1.default.get("https://example.com/", {
+                    headers: {
+                        "User-Agent": (0, ua_gen_1.UAGen)(),
+                    },
+                });
                 if (response.status === 200) {
                     console.log(`[${color_1.color.green}VALID${color_1.color.white}]`, proxy);
                     fs_1.default.appendFileSync("data/validProxies.txt", `${proxy}\n`, "utf-8");
