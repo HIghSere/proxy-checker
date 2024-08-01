@@ -66,7 +66,7 @@ function main() {
                     timeoutCountor++;
                 }
                 else {
-                    console.log(`[${color_1.color.red}INVALID${color_1.color.white}]`, proxy);
+                    console.log(`[${color_1.color.red}INVALID${color_1.color.white}] ${error}`, proxy);
                     invalidCountor++;
                 }
             }
