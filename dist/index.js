@@ -47,7 +47,7 @@ function main() {
             try {
                 const response = yield axios_1.default.get("https://example.com/", {
                     headers: {
-                        "User-Agent": (0, ua_gen_1.UAGen)(),
+                        "User-Agent": (0, ua_gen_1.UAGen)().trim(),
                     },
                 });
                 if (response.status === 200) {
