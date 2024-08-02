@@ -46,16 +46,16 @@ function main() {
         const proxies = fs_1.default.readFileSync("data/unknownProxies.txt", "utf-8").toString().split("\n");
         const checkPromise = proxies.map((proxy) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const [host, port] = proxy.split(":");
-                const response = yield axios_1.default.get("https://example.com/", {
+                const response = yield axios_1.default.get("https://api.ipify.org/", {
                     method: "GET",
                     headers: {
                         "User-Agent": (0, ua_gen_1.UAGen)().trim(),
                     },
-                    httpsAgent: new https_proxy_agent_1.HttpsProxyAgent(`http://${host.trim()}:${parseInt(port.trim())}`),
+                    httpsAgent: new https_proxy_agent_1.HttpsProxyAgent(`http://${proxy.trim()}`),
+                    timeout: 3000,
                 });
                 if (response.status === 200) {
-                    console.log(`[${color_1.color.green}VALID${color_1.color.white}]`, proxy.trim());
+                    console.log(`[${color_1.color.green}VALID${color_1.color.white}]`, response.data.trim());
                     fs_1.default.appendFileSync("data/validProxies.txt", `${proxy}\n`, "utf-8");
                     validCountor++;
                 }
