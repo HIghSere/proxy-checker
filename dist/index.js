@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const axios_1 = __importDefault(require("axios"));
+const https_proxy_agent_1 = require("https-proxy-agent");
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const prompt = (0, prompt_sync_1.default)();
 //import functions files
@@ -45,18 +46,21 @@ function main() {
         const proxies = fs_1.default.readFileSync("data/unknownProxies.txt", "utf-8").toString().split("\n");
         const checkPromise = proxies.map((proxy) => __awaiter(this, void 0, void 0, function* () {
             try {
+                const [host, port] = proxy.split(":");
                 const response = yield axios_1.default.get("https://example.com/", {
+                    method: "GET",
                     headers: {
                         "User-Agent": (0, ua_gen_1.UAGen)().trim(),
                     },
+                    httpsAgent: new https_proxy_agent_1.HttpsProxyAgent(`http://${host.trim()}:${parseInt(port.trim())}`),
                 });
                 if (response.status === 200) {
-                    console.log(`[${color_1.color.green}VALID${color_1.color.white}]`, proxy);
+                    console.log(`[${color_1.color.green}VALID${color_1.color.white}]`, proxy.trim());
                     fs_1.default.appendFileSync("data/validProxies.txt", `${proxy}\n`, "utf-8");
                     validCountor++;
                 }
                 else {
-                    console.log(`[${color_1.color.red}INVALID${color_1.color.white}]`, proxy);
+                    console.log(`[${color_1.color.red}INVALID${color_1.color.white}]`, proxy.trim());
                     invalidCountor++;
                 }
             }
@@ -66,7 +70,7 @@ function main() {
                     timeoutCountor++;
                 }
                 else {
-                    console.log(`[${color_1.color.red}INVALID${color_1.color.white}] ${error}`, proxy);
+                    console.log(`[${color_1.color.red}INVALID${color_1.color.white}] ${error}`, proxy.trim());
                     invalidCountor++;
                 }
             }
