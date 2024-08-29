@@ -19,7 +19,6 @@ const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const prompt = (0, prompt_sync_1.default)();
 //import functions files
 const color_1 = require("./util/color");
-const ua_gen_1 = require("./util/ua-gen");
 //start main
 main();
 function main() {
@@ -48,9 +47,6 @@ function main() {
             try {
                 const response = yield axios_1.default.get("https://api.ipify.org/", {
                     method: "GET",
-                    headers: {
-                        "User-Agent": (0, ua_gen_1.UAGen)().trim(),
-                    },
                     httpsAgent: new https_proxy_agent_1.HttpsProxyAgent(`http://${proxy.trim()}`),
                     timeout: 3000,
                 });
